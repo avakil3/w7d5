@@ -1,5 +1,7 @@
 class SubsController < ApplicationController
     before_action :ensure_logged_in
+	before_action :is_user_the_moderator?, only: [:edit, :update]
+
 
     def new
         @sub = Sub.new
@@ -13,7 +15,7 @@ class SubsController < ApplicationController
 
     def create
         @sub = Sub.new(sub_params)
-        @sub.user_id  = current_user.id
+        @sub.user_id = current_user.id
 
         if @sub.save
             redirect_to sub_url(@sub)
@@ -34,6 +36,19 @@ class SubsController < ApplicationController
 
     end
 
+	def is_user_the_moderator?
+		@sub.moderator == current_user
+	end
+
+	def update
+		@sub = Sub.find_by(id: params[:id])
+		if @sub.update(sub_params)
+			redirect_to sub_url(@sub.id)
+		else
+			flash.now[:errors] = @sub.errors.full_messages
+			render :edit
+		end
+	end
 
     private
 
