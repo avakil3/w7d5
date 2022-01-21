@@ -6,6 +6,7 @@ class UsersController < ApplicationController
     end
 
     def show
+		@user = User.find(params[:id])
         render :show
     end
 
@@ -16,7 +17,7 @@ class UsersController < ApplicationController
             login(@user)
             redirect_to user_url(@user)
         else
-            flash.new[:error] = @user.errors.full_messages
+            flash.now[:error] = @user.errors.full_messages
             render :new
         end
     end

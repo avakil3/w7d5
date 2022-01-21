@@ -9,12 +9,12 @@ class User < ApplicationRecord
 	after_initialize :ensure_session_token
 
     has_many :subs,
-        primary_id: :id,
+        # primary_id: :id,
         foreign_key: :user_id,
         class_name: :Sub
 
 	has_many :posts,
-		primary_id: :id,
+		# primary_id: :id,
 		foreign_key: :user_id,
 		class_name: :Post
 
